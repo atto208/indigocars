@@ -185,6 +185,7 @@ export type UI = {
   popular: string;
   bookCta: string;
   aboutEyebrow: string;
+  reviews: { eyebrow: string; title: string; subtitle: string };
   why: {
     eyebrow: string; title: string; subtitle: string;
     deliveredTitle: string; deliveredDesc: string;
@@ -208,6 +209,7 @@ export const UI_STRINGS: Record<Locale, UI> = {
     spec: { seats: "seats", hp: "hp", bags: "bags", perDay: "per day" },
     popular: "Popular", bookCta: "Book on WhatsApp",
     aboutEyebrow: "About us",
+    reviews: { eyebrow: "Reviews", title: "Loved by our renters", subtitle: "Real words from travellers and locals who rented with Indigo Cars." },
     why: {
       eyebrow: "Why Indigo", title: "Renting, Reinvented",
       subtitle: "No paperwork marathons, no hidden fees. Just a new car, delivered where you are — and a team one message away.",
@@ -230,6 +232,7 @@ export const UI_STRINGS: Record<Locale, UI> = {
     spec: { seats: "koltuk", hp: "hp", bags: "valiz", perDay: "günlük" },
     popular: "Popüler", bookCta: "WhatsApp'tan Ayırt",
     aboutEyebrow: "Hakkımızda",
+    reviews: { eyebrow: "Yorumlar", title: "Müşterilerimiz seviyor", subtitle: "Indigo Cars ile kiralayan gezginlerden ve yerlilerden gerçek yorumlar." },
     why: {
       eyebrow: "Neden Indigo", title: "Kiralama, Yeniden",
       subtitle: "Evrak maratonu yok, gizli ücret yok. Sadece bulunduğunuz yere teslim edilen yeni bir araç — ve bir mesaj uzağınızdaki ekip.",
@@ -252,6 +255,7 @@ export const UI_STRINGS: Record<Locale, UI> = {
     spec: { seats: "مقاعد", hp: "حصان", bags: "حقائب", perDay: "يومياً" },
     popular: "الأكثر طلباً", bookCta: "احجز عبر واتساب",
     aboutEyebrow: "من نحن",
+    reviews: { eyebrow: "التقييمات", title: "عملاؤنا يحبّوننا", subtitle: "كلمات حقيقية من مسافرين ومقيمين استأجروا مع Indigo Cars." },
     why: {
       eyebrow: "لماذا Indigo", title: "تأجير بمفهوم جديد",
       subtitle: "لا أوراق مرهقة ولا رسوم خفية. فقط سيارة جديدة تصل إليك أينما كنت — وفريق على بُعد رسالة واحدة.",
@@ -274,6 +278,7 @@ export const UI_STRINGS: Record<Locale, UI> = {
     spec: { seats: "мест", hp: "л.с.", bags: "сумки", perDay: "в день" },
     popular: "Популярно", bookCta: "Бронь в WhatsApp",
     aboutEyebrow: "О нас",
+    reviews: { eyebrow: "Отзывы", title: "Нас выбирают", subtitle: "Реальные отзывы путешественников и местных, арендовавших у Indigo Cars." },
     why: {
       eyebrow: "Почему Indigo", title: "Аренда по-новому",
       subtitle: "Никаких бумажных марафонов и скрытых платежей. Просто новое авто с доставкой туда, где вы — и команда на расстоянии одного сообщения.",
@@ -296,6 +301,7 @@ export const UI_STRINGS: Record<Locale, UI> = {
     spec: { seats: "Sitze", hp: "PS", bags: "Koffer", perDay: "pro Tag" },
     popular: "Beliebt", bookCta: "Per WhatsApp buchen",
     aboutEyebrow: "Über uns",
+    reviews: { eyebrow: "Bewertungen", title: "Von unseren Mietern geliebt", subtitle: "Echte Stimmen von Reisenden und Einheimischen, die bei Indigo Cars gemietet haben." },
     why: {
       eyebrow: "Warum Indigo", title: "Mieten, neu gedacht",
       subtitle: "Kein Papierkram-Marathon, keine versteckten Gebühren. Nur ein neues Auto, geliefert wo Sie sind — und ein Team eine Nachricht entfernt.",

@@ -10,6 +10,7 @@ const nav = [
   { href: "/admin", label: "Dashboard", icon: "◧" },
   { href: "/admin/content", label: "Website Content", icon: "✎" },
   { href: "/admin/cars", label: "Cars", icon: "⊞" },
+  { href: "/admin/reviews", label: "Reviews", icon: "★" },
   { href: "/admin/calendar", label: "Booking Calendar", icon: "▦" },
 ];
 

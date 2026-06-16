@@ -103,6 +103,34 @@ export async function deleteCar(formData: FormData) {
   revalidateAll();
 }
 
+// ---------- reviews ----------
+
+export async function saveReview(formData: FormData) {
+  await requireAdmin();
+  const id = (formData.get("id") as string) || null;
+  const data = {
+    name: (formData.get("name") as string).trim(),
+    location: ((formData.get("location") as string) || "").trim() || null,
+    rating: Math.min(5, Math.max(1, parseInt(formData.get("rating") as string) || 5)),
+    text: (formData.get("text") as string).trim(),
+    published: formData.get("published") === "on",
+    sortOrder: parseInt(formData.get("sortOrder") as string) || 0,
+  };
+  if (id) {
+    await prisma.review.update({ where: { id }, data });
+  } else {
+    await prisma.review.create({ data });
+  }
+  revalidateAll();
+  redirect("/admin/reviews");
+}
+
+export async function deleteReview(formData: FormData) {
+  await requireAdmin();
+  await prisma.review.delete({ where: { id: formData.get("id") as string } });
+  revalidateAll();
+}
+
 // ---------- fleet (calendar cars) ----------
 
 export async function addFleetCar(formData: FormData) {

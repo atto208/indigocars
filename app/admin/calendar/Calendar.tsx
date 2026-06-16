@@ -401,7 +401,10 @@ function DetailModal({ booking, onClose }: { booking: BookingItem; onClose: () =
           action={deleteBooking}
           className="flex-1"
           onSubmit={(e) => {
-            if (!confirm("Delete this booking?")) e.preventDefault();
+            const ok = window.confirm(
+              `Delete the booking for ${booking.firstName} ${booking.lastName}?\n\nThis permanently removes this customer's rental record (${booking.carName}). This cannot be undone.`
+            );
+            if (!ok) e.preventDefault();
             else onClose();
           }}
         >

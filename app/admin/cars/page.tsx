@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { deleteCar } from "../actions";
+import ConfirmSubmit from "../ConfirmSubmit";
 
 export const dynamic = "force-dynamic";
 
@@ -66,9 +67,12 @@ export default async function CarsAdminPage() {
                 </Link>
                 <form action={deleteCar} className="flex-1">
                   <input type="hidden" name="id" value={car.id} />
-                  <button className="w-full rounded-lg border border-red-400/30 py-2 font-display text-xs font-bold uppercase tracking-wider text-red-300 transition hover:bg-red-500/20">
+                  <ConfirmSubmit
+                    message={`Delete “${car.name}” from the website?\n\nThis permanently removes the car and its details. This cannot be undone.`}
+                    className="w-full rounded-lg border border-red-400/30 py-2 font-display text-xs font-bold uppercase tracking-wider text-red-300 transition hover:bg-red-500/20"
+                  >
                     Delete
-                  </button>
+                  </ConfirmSubmit>
                 </form>
               </div>
             </div>

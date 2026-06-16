@@ -7,17 +7,22 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import FleetSection from "@/components/FleetSection";
 import { WhyUs, About, Contact, Footer, WhatsAppFloat } from "@/components/Sections";
+import Reviews from "@/components/Reviews";
 import { Cursor } from "@/components/interactions";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const locale = await getRequestLocale();
-  const [s, cars] = await Promise.all([
+  const [s, cars, reviews] = await Promise.all([
     getLocalizedSettings(locale),
     prisma.car.findMany({
       where: { published: true },
       orderBy: [{ featured: "desc" }, { sortOrder: "asc" }],
+    }),
+    prisma.review.findMany({
+      where: { published: true },
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
     }),
   ]);
 
@@ -54,6 +59,7 @@ export default async function Home() {
       />
       <WhyUs t={t} heroImage={s.heroImage} />
       <About s={s} t={t} />
+      <Reviews reviews={reviews} t={t} />
       <Contact s={s} t={t} />
       <Footer s={s} />
       <WhatsAppFloat href={whatsappHref} />

@@ -73,3 +73,16 @@ model Setting {
   key   String @id
   value String
 }
+
+// A customer testimonial shown on the public site (managed in the admin).
+model Review {
+  id        String  @id @default(cuid())
+  name      String
+  location  String? // e.g. "Dubai" or "Google review"
+  rating    Int     @default(5) // 1–5 stars
+  text      String
+  published Boolean @default(true)
+  sortOrder Int     @default(0)
+
+  createdAt DateTime @default(now())
+}

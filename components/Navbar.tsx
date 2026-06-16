@@ -28,6 +28,7 @@ export default function Navbar({
   const links = [
     { href: "#fleet", label: t.nav.ourCars },
     { href: "#why", label: t.nav.whyUs },
+    { href: "#reviews", label: t.reviews.eyebrow },
     { href: "#about", label: t.nav.about },
     { href: "#contact", label: t.nav.contact },
   ];

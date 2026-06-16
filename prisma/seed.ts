@@ -51,6 +51,16 @@ const fleet = [
   "Volkswagen Taigo — 2024",
 ];
 
+// [name, location, rating, text]
+const reviews: [string, string, number, string][] = [
+  ["Sara H.", "Dubai", 5, "Booked a Citroën C4 X for a week. Spotless car, delivered right to our hotel in Sultanahmet and collected at the airport when we left. Effortless."],
+  ["Omar K.", "Kuwait", 5, "Great service, brand-new car, full insurance. The team replied on WhatsApp within minutes — even late at night. Highly recommend."],
+  ["Elena V.", "Moscow", 5, "Rented an SUV for a family trip. Clean, modern, and the airport delivery saved us so much time on arrival."],
+  ["Mehmet A.", "İstanbul", 5, "Şeffaf fiyatlar ve çok hızlı iletişim. WhatsApp'tan yazdım, 10 dakikada her şey ayarlandı. Teşekkürler!"],
+  ["James P.", "London", 4, "Smooth process from start to finish. Fair prices and genuinely no hidden fees. Would rent again."],
+  ["Aisha R.", "Doha", 5, "Indigo made it so easy — the car was waiting at IST arrivals exactly on time. Will use them every trip to Istanbul."],
+];
+
 function day(offset: number): Date {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
@@ -90,6 +100,14 @@ async function main() {
       ],
     });
     console.log("Seeded 2 example bookings (incl. same-day turnover)");
+  }
+
+  if ((await prisma.review.count()) === 0) {
+    let r = 0;
+    for (const [name, location, rating, text] of reviews) {
+      await prisma.review.create({ data: { name, location, rating, text, sortOrder: r++ } });
+    }
+    console.log(`Seeded ${reviews.length} reviews`);
   }
 }
 
