@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3f4fb"/><stop offset="1" stop-color="#e7e9f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <ellipse cx="400" cy="360" rx="250" ry="20" fill="#383e7e" opacity="0.06"/>
+  <g fill="#383e7e" opacity="0.18">
+    <path d="M150 330c2-26 16-34 40-40 30-44 70-58 130-58 64 0 104 12 140 54 40 4 78 14 96 28 14 11 16 24 14 34l-3 12c-1 6-7 8-14 8h-30a44 44 0 0 0-88 0H252a44 44 0 0 0-88 0h-12c-8 0-13-5-14-12z"/>
+  </g>
+  <circle cx="252" cy="364" r="30" fill="#fff" stroke="#383e7e" stroke-opacity="0.3" stroke-width="6"/>
+  <circle cx="520" cy="364" r="30" fill="#fff" stroke="#383e7e" stroke-opacity="0.3" stroke-width="6"/>
+  <text x="400" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" letter-spacing="3" fill="#383e7e" opacity="0.55">STUDIO PHOTO COMING SOON</text>
+</svg>

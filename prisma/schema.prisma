@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// A car model shown on the public website (unique per model — no duplicates)
+model Car {
+  id           String  @id @default(cuid())
+  name         String // e.g. "Fiat Egea Sedan"
+  brand        String // e.g. "Fiat"
+  category     String // Economy, Comfort, SUV, Luxury, Van
+  image        String // path under /public or full URL
+  seats        Int
+  horsepower   Int
+  transmission String // Automatic / Manual
+  fuel         String // Petrol / Diesel / Hybrid
+  luggage      Int // number of suitcases
+  doors        Int     @default(4)
+  year         Int?
+  pricePerDay  String? // free text, e.g. "€35" — shown only if set
+
+  // imagin.studio targeting — when an IMAGIN_CUSTOMER_KEY is set, the card
+  // renders a clean studio side-profile from these slugs instead of `image`.
+  imaginMake  String? // e.g. "bmw", "mercedes", "renault"
+  imaginModel String? // imagin modelFamily, e.g. "5-series", "clio"
+
+  featured     Boolean @default(false)
+  published    Boolean @default(true)
+  sortOrder    Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// A physical car in the fleet, used only in the internal booking calendar.
+// You can have several FleetCars of the same model (e.g. 3 × Fiat Egea).
+model FleetCar {
+  id        String    @id @default(cuid())
+  name      String // e.g. "Fiat Egea — 34 ABC 123"
+  plate     String?
+  sortOrder Int       @default(0)
+  bookings  Booking[]
+
+  createdAt DateTime @default(now())
+}
+
+// An internal booking on the calendar. Dates are date-only (stored at UTC midnight).
+// Same-day turnover is allowed: a booking may START on the same day another one ENDS.
+model Booking {
+  id         String   @id @default(cuid())
+  fleetCar   FleetCar @relation(fields: [fleetCarId], references: [id], onDelete: Cascade)
+  fleetCarId String
+
+  startDate DateTime // pickup day (inclusive)
+  endDate   DateTime // return day (inclusive — car is handed back this day)
+
+  firstName     String
+  lastName      String
+  passportNumber String?
+  licenseNumber  String?
+  phone         String?
+  notes         String?
+
+  createdAt DateTime @default(now())
+}
+
+// Key-value store for all editable website content (texts, photos, contact info)
+model Setting {
+  key   String @id
+  value String
+}
