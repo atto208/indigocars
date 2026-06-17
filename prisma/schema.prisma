@@ -28,6 +28,7 @@ model Car {
   imaginMake  String? // e.g. "bmw", "mercedes", "renault"
   imaginModel String? // imagin modelFamily, e.g. "5-series", "clio"
 
+  rented       Boolean @default(false) // shows a "RENTED" ribbon on the card
   featured     Boolean @default(false)
   published    Boolean @default(true)
   sortOrder    Int     @default(0)

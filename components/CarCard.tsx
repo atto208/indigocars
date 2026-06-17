@@ -16,6 +16,7 @@ export type CarData = {
   year: number | null;
   pricePerDay: string | null;
   featured: boolean;
+  rented: boolean;
 };
 
 function Spec({ icon, label }: { icon: React.ReactNode; label: string }) {
@@ -60,13 +61,15 @@ export default function CarCard({
   whatsappNumber,
   template,
   t,
+  extra = "",
 }: {
   car: CarData;
   whatsappNumber: string;
   template: string;
   t: UI;
+  extra?: string;
 }) {
-  const message = template.replace("{car}", car.name);
+  const message = template.replace("{car}", car.name) + extra;
   const href = waLink(whatsappNumber, message);
 
   return (
@@ -83,10 +86,16 @@ export default function CarCard({
         <span className="absolute left-3 top-3 rounded-full bg-brand/95 px-3 py-1 font-display text-[10px] font-bold uppercase tracking-widest text-white">
           {t.cat[car.category] ?? car.category}
         </span>
-        {car.featured && (
+        {car.featured && !car.rented && (
           <span className="absolute right-3 top-3 rounded-full bg-accent/95 px-3 py-1 font-display text-[10px] font-bold uppercase tracking-widest text-white">
             {t.popular}
           </span>
+        )}
+        {/* diagonal "RENTED" corner ribbon */}
+        {car.rented && (
+          <div className="pointer-events-none absolute -right-14 top-6 z-20 w-48 rotate-45 bg-red-600 py-1.5 text-center font-display text-xs font-bold uppercase tracking-[0.2em] text-white shadow-lg">
+            {t.book.rented}
+          </div>
         )}
       </div>
 

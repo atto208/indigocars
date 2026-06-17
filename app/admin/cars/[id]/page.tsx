@@ -97,7 +97,11 @@ export default async function CarEditPage({
           </div>
         </div>
 
-        <div className="flex gap-8 pt-2">
+        <div className="flex flex-wrap gap-8 pt-2">
+          <label className="flex items-center gap-2 text-sm text-brand-soft">
+            <input type="checkbox" name="rented" defaultChecked={car?.rented ?? false} className="h-4 w-4 accent-[#dc2626]" />
+            Mark as “Rented” (red ribbon)
+          </label>
           <label className="flex items-center gap-2 text-sm text-brand-soft">
             <input type="checkbox" name="featured" defaultChecked={car?.featured ?? false} className="h-4 w-4 accent-[#008067]" />
             Mark as “Popular”

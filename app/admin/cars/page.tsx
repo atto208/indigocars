@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { prisma } from "@/lib/db";
-import { deleteCar } from "../actions";
+import { deleteCar, toggleRented } from "../actions";
 import ConfirmSubmit from "../ConfirmSubmit";
 
 export const dynamic = "force-dynamic";
@@ -40,9 +40,14 @@ export default async function CarsAdminPage() {
                   Hidden
                 </span>
               )}
-              {car.featured && (
+              {car.featured && !car.rented && (
                 <span className="absolute right-3 top-3 rounded-full bg-accent/90 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
                   Popular
+                </span>
+              )}
+              {car.rented && (
+                <span className="absolute right-3 top-3 rounded-full bg-red-600 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
+                  Rented
                 </span>
               )}
             </div>
@@ -58,7 +63,19 @@ export default async function CarsAdminPage() {
                   <span className="font-display font-bold text-accent-light">{car.pricePerDay}</span>
                 )}
               </div>
-              <div className="mt-4 flex gap-2">
+              <form action={toggleRented} className="mt-4">
+                <input type="hidden" name="id" value={car.id} />
+                <button
+                  className={`w-full rounded-lg py-2 font-display text-xs font-bold uppercase tracking-wider transition ${
+                    car.rented
+                      ? "bg-red-600 text-white hover:bg-red-700"
+                      : "border border-red-400/30 text-red-300 hover:bg-red-500/20"
+                  }`}
+                >
+                  {car.rented ? "● Rented — click to mark available" : "Mark as rented"}
+                </button>
+              </form>
+              <div className="mt-2 flex gap-2">
                 <Link
                   href={`/admin/cars/${car.id}`}
                   className="flex-1 rounded-lg bg-brand py-2 text-center font-display text-xs font-bold uppercase tracking-wider text-white transition hover:bg-brand-light"

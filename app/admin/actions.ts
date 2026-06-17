@@ -82,6 +82,7 @@ export async function saveCar(formData: FormData) {
     pricePerDay: (formData.get("pricePerDay") as string).trim() || null,
     imaginMake: ((formData.get("imaginMake") as string) || "").trim().toLowerCase() || null,
     imaginModel: ((formData.get("imaginModel") as string) || "").trim().toLowerCase() || null,
+    rented: formData.get("rented") === "on",
     featured: formData.get("featured") === "on",
     published: formData.get("published") === "on",
     sortOrder: parseInt(formData.get("sortOrder") as string) || 0,
@@ -100,6 +101,15 @@ export async function deleteCar(formData: FormData) {
   await requireAdmin();
   const id = formData.get("id") as string;
   await prisma.car.delete({ where: { id } });
+  revalidateAll();
+}
+
+// Quick on/off toggle for the "Rented" ribbon from the cars list.
+export async function toggleRented(formData: FormData) {
+  await requireAdmin();
+  const id = formData.get("id") as string;
+  const car = await prisma.car.findUnique({ where: { id }, select: { rented: true } });
+  if (car) await prisma.car.update({ where: { id }, data: { rented: !car.rented } });
   revalidateAll();
 }
 
