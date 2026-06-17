@@ -75,6 +75,17 @@ model Setting {
   value String
 }
 
+// An admin-panel login. role "admin" can manage users; "manager" can do
+// everything else. Passwords are stored as scrypt hashes (lib/password.ts).
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  name         String?
+  passwordHash String
+  role         String   @default("manager") // "admin" | "manager"
+  createdAt    DateTime @default(now())
+}
+
 // A customer testimonial shown on the public site (managed in the admin).
 model Review {
   id        String  @id @default(cuid())

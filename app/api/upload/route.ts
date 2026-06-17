@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { put } from "@vercel/blob";
-import { isAdmin } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
-  if (!(await isAdmin())) {
+  if (!(await getCurrentUser())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

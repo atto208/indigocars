@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { isAdmin } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
 import { logout } from "./actions";
 import LoginForm from "./LoginForm";
 
@@ -19,9 +19,9 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const authed = await isAdmin();
+  const user = await getCurrentUser();
 
-  if (!authed) {
+  if (!user) {
     return (
       <div dir="ltr" className="flex min-h-screen items-center justify-center bg-ink px-4">
         <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-ink-soft p-8">
@@ -58,8 +58,26 @@ export default async function AdminLayout({
               {n.label}
             </Link>
           ))}
+          {user.role === "admin" && (
+            <Link
+              href="/admin/users"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 font-display text-sm text-brand-soft transition hover:bg-brand/30 hover:text-white"
+            >
+              <span className="text-brand-light">⚇</span>
+              Users
+            </Link>
+          )}
         </nav>
         <div className="space-y-1 border-t border-white/5 p-3">
+          <div className="flex items-center gap-2.5 px-3 py-2">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand font-display text-xs font-bold text-white">
+              {(user.name || user.username).charAt(0).toUpperCase()}
+            </span>
+            <div className="min-w-0">
+              <div className="truncate font-display text-sm font-semibold text-white">{user.name || user.username}</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-brand-light">{user.role}</div>
+            </div>
+          </div>
           <Link
             href="/"
             target="_blank"

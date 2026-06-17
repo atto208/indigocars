@@ -9,10 +9,19 @@ export default function LoginForm() {
   return (
     <form action={action} className="mt-6 space-y-4">
       <input
+        type="text"
+        name="username"
+        required
+        autoFocus
+        autoComplete="username"
+        placeholder="Username"
+        className="w-full rounded-lg border border-white/10 bg-ink px-4 py-3 text-white outline-none transition focus:border-brand-light"
+      />
+      <input
         type="password"
         name="password"
         required
-        autoFocus
+        autoComplete="current-password"
         placeholder="Password"
         className="w-full rounded-lg border border-white/10 bg-ink px-4 py-3 text-white outline-none transition focus:border-brand-light"
       />

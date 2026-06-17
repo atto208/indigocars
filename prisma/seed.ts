@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { hashPassword } from "../lib/password";
 
 const prisma = new PrismaClient();
 
@@ -100,6 +101,14 @@ async function main() {
       ],
     });
     console.log("Seeded 2 example bookings (incl. same-day turnover)");
+  }
+
+  if ((await prisma.user.count()) === 0) {
+    const password = process.env.ADMIN_PASSWORD || "indigo2026";
+    await prisma.user.create({
+      data: { username: "admin", name: "Admin", role: "admin", passwordHash: hashPassword(password) },
+    });
+    console.log(`Seeded admin user (username: admin, password: ${password})`);
   }
 
   if ((await prisma.review.count()) === 0) {
