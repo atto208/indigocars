@@ -20,7 +20,6 @@ export const metadata: Metadata = {
   title: "Indigo Cars — Premium Car Rental in Istanbul",
   description:
     "Rent a car in Istanbul with Indigo Cars. 25+ modern, fully insured vehicles — economy to luxury. Airport delivery, transparent prices, 24/7 WhatsApp support.",
-  icons: { icon: "/brand/icon-circle.png", apple: "/brand/icon-circle.png" },
   openGraph: {
     title: "Indigo Cars — Premium Car Rental in Istanbul",
     description:
