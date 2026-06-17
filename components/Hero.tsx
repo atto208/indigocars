@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Counter, Magnetic } from "./interactions";
 
@@ -32,6 +33,20 @@ export default function Hero({
   const words = title.replace(/\n/g, " ").split(" ");
   const marquee = [...brands, ...brands];
 
+  // Browsers block autoplay unless the element is *actually* muted; React
+  // doesn't always set the muted property, so force it + start playback.
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true;
+    v.defaultMuted = true;
+    const tryPlay = () => v.play().catch(() => {});
+    tryPlay();
+    v.addEventListener("loadeddata", tryPlay, { once: true });
+    return () => v.removeEventListener("loadeddata", tryPlay);
+  }, []);
+
   const container = {
     hidden: {},
     show: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
@@ -46,15 +61,17 @@ export default function Hero({
       {/* cinematic video */}
       <div className="absolute inset-0 -z-10">
         <video
+          ref={videoRef}
           className="h-full w-full object-cover"
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           poster="/video/hero-poster.jpg"
-        >
-          <source src="/video/hero.mp4" type="video/mp4" />
-        </video>
+          src="/video/hero.mp4"
+        />
+
         {/* brand gradient + legibility */}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-deep/90 via-brand/45 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-white via-brand-deep/30 to-brand-deep/20" />
