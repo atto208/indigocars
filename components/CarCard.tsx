@@ -1,4 +1,8 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { waLink } from "@/lib/settings";
 import type { UI } from "@/lib/i18n";
 
@@ -56,21 +60,53 @@ const I = {
   ),
 };
 
+const WA = (
+  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+    <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.7-1.3 1.3-1.8 1.4-.5 0-1 .2-3.4-.7-2.9-1.1-4.7-4-4.9-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4l.9 2.1c0 .2.1.4 0 .6l-.4.6-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.2.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4 0 .1 0 .4-.2.8z" />
+  </svg>
+);
+
 export default function CarCard({
   car,
   whatsappNumber,
   template,
   t,
-  extra = "",
 }: {
   car: CarData;
   whatsappNumber: string;
   template: string;
   t: UI;
-  extra?: string;
 }) {
-  const message = template.replace("{car}", car.name) + extra;
-  const href = waLink(whatsappNumber, message);
+  const [open, setOpen] = useState(false);
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [pickup, setPickup] = useState("");
+  const [dropoff, setDropoff] = useState("");
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  const locLabel = (v: string) =>
+    v === "ist" ? t.book.locIst : v === "saw" ? t.book.locSaw : v === "other" ? t.book.locOther : "";
+  const parts: string[] = [];
+  if (from || to) parts.push(`📅 ${t.book.msgDates}: ${from || "?"} → ${to || "?"}`);
+  if (pickup) parts.push(`📍 ${t.book.msgPickup}: ${locLabel(pickup)}`);
+  if (dropoff) parts.push(`📍 ${t.book.msgDropoff}: ${locLabel(dropoff)}`);
+  const extra = parts.length ? `\n\n${parts.join("\n")}` : "";
+  const href = waLink(whatsappNumber, template.replace("{car}", car.name) + extra);
+
+  const today = new Date().toISOString().slice(0, 10);
+  const fieldCls =
+    "w-full rounded-xl border border-brand/15 bg-white px-3 py-2.5 text-sm text-brand outline-none transition focus:border-brand";
+  const labelCls = "mb-1 block text-[11px] font-bold uppercase tracking-wider text-slate-brand/60";
 
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-brand/10 bg-white shadow-sm transition-shadow duration-300 hover:shadow-2xl hover:shadow-brand/15">
@@ -81,7 +117,6 @@ export default function CarCard({
           loading="lazy"
           className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.07]"
         />
-        {/* sheen sweep */}
         <span className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 -skew-x-12 bg-white/40 opacity-0 blur-md transition-all duration-700 group-hover:left-[120%] group-hover:opacity-100" />
         <span className="absolute left-3 top-3 rounded-full bg-brand/95 px-3 py-1 font-display text-[10px] font-bold uppercase tracking-widest text-white">
           {t.cat[car.category] ?? car.category}
@@ -91,7 +126,6 @@ export default function CarCard({
             {t.popular}
           </span>
         )}
-        {/* diagonal "RENTED" corner ribbon */}
         {car.rented && (
           <div className="pointer-events-none absolute -right-14 top-6 z-20 w-48 rotate-45 bg-red-600 py-1.5 text-center font-display text-xs font-bold uppercase tracking-[0.2em] text-white shadow-lg">
             {t.book.rented}
@@ -124,19 +158,87 @@ export default function CarCard({
           <Spec icon={I.luggage} label={`${car.luggage} ${t.spec.bags}`} />
         </div>
 
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={() => setOpen(true)}
           data-cursor
           className="mt-5 flex items-center justify-center gap-2 rounded-xl bg-accent py-3 font-display text-sm font-bold uppercase tracking-widest text-white transition hover:bg-accent-light"
         >
-          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
-            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.7-1.3 1.3-1.8 1.4-.5 0-1 .2-3.4-.7-2.9-1.1-4.7-4-4.9-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4l.9 2.1c0 .2.1.4 0 .6l-.4.6-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.2.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4 0 .1 0 .4-.2.8z" />
-          </svg>
-          {t.bookCta}
-        </a>
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+          {t.book.chooseCta}
+        </button>
       </div>
+
+      {/* booking popup — portalled to <body> so the card's tilt transform
+          doesn't trap the fixed overlay */}
+      {open && typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[120] flex items-center justify-center bg-brand-deep/60 p-4 backdrop-blur-sm"
+            onClick={(e) => e.target === e.currentTarget && setOpen(false)}
+          >
+            <div className="max-h-[92vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white shadow-2xl">
+              <div className="flex items-start justify-between gap-3 border-b border-brand/10 p-5">
+                <div>
+                  <div className="font-display text-xs font-bold uppercase tracking-[0.2em] text-accent">{t.book.title}</div>
+                  <h3 className="mt-0.5 font-display text-xl font-bold text-brand">{car.name}</h3>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-brand/55">
+                    {t.cat[car.category] ?? car.category}
+                  </p>
+                </div>
+                <button onClick={() => setOpen(false)} aria-label="Close" className="rounded-full p-1 text-slate-brand/50 transition hover:bg-brand/10 hover:text-brand">
+                  <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+                </button>
+              </div>
+
+              <div className="space-y-4 p-5">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className={labelCls}>{t.book.pickupDate}</label>
+                    <input type="date" min={today} value={from} onChange={(e) => setFrom(e.target.value)} className={fieldCls} />
+                  </div>
+                  <div>
+                    <label className={labelCls}>{t.book.returnDate}</label>
+                    <input type="date" min={from || today} value={to} onChange={(e) => setTo(e.target.value)} className={fieldCls} />
+                  </div>
+                  <div>
+                    <label className={labelCls}>{t.book.pickupLoc}</label>
+                    <select value={pickup} onChange={(e) => setPickup(e.target.value)} className={fieldCls}>
+                      <option value="">{t.book.selectPlaceholder}</option>
+                      <option value="ist">{t.book.locIst}</option>
+                      <option value="saw">{t.book.locSaw}</option>
+                      <option value="other">{t.book.locOther}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className={labelCls}>{t.book.dropoffLoc}</label>
+                    <select value={dropoff} onChange={(e) => setDropoff(e.target.value)} className={fieldCls}>
+                      <option value="">{t.book.selectPlaceholder}</option>
+                      <option value="ist">{t.book.locIst}</option>
+                      <option value="saw">{t.book.locSaw}</option>
+                      <option value="other">{t.book.locOther}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="overflow-hidden rounded-2xl border border-brand/10 bg-gradient-to-b from-brand-tint to-white">
+                  <img src={car.image} alt={car.name} className="aspect-[8/5] w-full object-cover" />
+                </div>
+
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-center gap-2 rounded-xl bg-accent py-3.5 font-display text-sm font-bold uppercase tracking-widest text-white shadow-lg shadow-accent/25 transition hover:bg-accent-light"
+                >
+                  {WA}
+                  {t.bookCta}
+                </a>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </article>
   );
 }

@@ -188,6 +188,7 @@ export type UI = {
   reviews: { eyebrow: string; title: string; subtitle: string };
   book: {
     title: string;
+    chooseCta: string;
     pickupDate: string; returnDate: string;
     pickupLoc: string; dropoffLoc: string;
     selectPlaceholder: string;
@@ -218,7 +219,7 @@ export const UI_STRINGS: Record<Locale, UI> = {
     spec: { seats: "seats", hp: "hp", bags: "bags", perDay: "per day" },
     popular: "Popular", bookCta: "Book on WhatsApp",
     aboutEyebrow: "About us",
-    book: { title: "Plan your rental", pickupDate: "Pick-up date", returnDate: "Return date", pickupLoc: "Pick-up location", dropoffLoc: "Drop-off location", selectPlaceholder: "Select…", locIst: "Istanbul Airport (IST)", locSaw: "Sabiha Gökçen (SAW)", locOther: "Other location", msgDates: "Dates", msgPickup: "Pick-up", msgDropoff: "Drop-off", rented: "Rented" },
+    book: { title: "Plan your rental", chooseCta: "Choose dates & book", pickupDate: "Pick-up date", returnDate: "Return date", pickupLoc: "Pick-up location", dropoffLoc: "Drop-off location", selectPlaceholder: "Select…", locIst: "Istanbul Airport (IST)", locSaw: "Sabiha Gökçen (SAW)", locOther: "Other location", msgDates: "Dates", msgPickup: "Pick-up", msgDropoff: "Drop-off", rented: "Rented" },
     reviews: { eyebrow: "Reviews", title: "Loved by our renters", subtitle: "Real words from travellers and locals who rented with Indigo Cars." },
     why: {
       eyebrow: "Why Indigo", title: "Renting, Reinvented",
@@ -242,7 +243,7 @@ export const UI_STRINGS: Record<Locale, UI> = {
     spec: { seats: "koltuk", hp: "hp", bags: "valiz", perDay: "günlük" },
     popular: "Popüler", bookCta: "WhatsApp'tan Ayırt",
     aboutEyebrow: "Hakkımızda",
-    book: { title: "Kiralamanı planla", pickupDate: "Alış tarihi", returnDate: "İade tarihi", pickupLoc: "Alış yeri", dropoffLoc: "Bırakış yeri", selectPlaceholder: "Seçin…", locIst: "İstanbul Havalimanı (IST)", locSaw: "Sabiha Gökçen (SAW)", locOther: "Diğer konum", msgDates: "Tarihler", msgPickup: "Alış", msgDropoff: "Bırakış", rented: "Kirada" },
+    book: { title: "Kiralamanı planla", chooseCta: "Tarih seç & rezerve et", pickupDate: "Alış tarihi", returnDate: "İade tarihi", pickupLoc: "Alış yeri", dropoffLoc: "Bırakış yeri", selectPlaceholder: "Seçin…", locIst: "İstanbul Havalimanı (IST)", locSaw: "Sabiha Gökçen (SAW)", locOther: "Diğer konum", msgDates: "Tarihler", msgPickup: "Alış", msgDropoff: "Bırakış", rented: "Kirada" },
     reviews: { eyebrow: "Yorumlar", title: "Müşterilerimiz seviyor", subtitle: "Indigo Cars ile kiralayan gezginlerden ve yerlilerden gerçek yorumlar." },
     why: {
       eyebrow: "Neden Indigo", title: "Kiralama, Yeniden",
@@ -266,7 +267,7 @@ export const UI_STRINGS: Record<Locale, UI> = {
     spec: { seats: "مقاعد", hp: "حصان", bags: "حقائب", perDay: "يومياً" },
     popular: "الأكثر طلباً", bookCta: "احجز عبر واتساب",
     aboutEyebrow: "من نحن",
-    book: { title: "خطّط لاستئجارك", pickupDate: "تاريخ الاستلام", returnDate: "تاريخ الإعادة", pickupLoc: "مكان الاستلام", dropoffLoc: "مكان التسليم", selectPlaceholder: "اختر…", locIst: "مطار إسطنبول (IST)", locSaw: "صبيحة كوكجن (SAW)", locOther: "موقع آخر", msgDates: "التواريخ", msgPickup: "الاستلام", msgDropoff: "التسليم", rented: "مؤجَّرة" },
+    book: { title: "خطّط لاستئجارك", chooseCta: "اختر التواريخ واحجز", pickupDate: "تاريخ الاستلام", returnDate: "تاريخ الإعادة", pickupLoc: "مكان الاستلام", dropoffLoc: "مكان التسليم", selectPlaceholder: "اختر…", locIst: "مطار إسطنبول (IST)", locSaw: "صبيحة كوكجن (SAW)", locOther: "موقع آخر", msgDates: "التواريخ", msgPickup: "الاستلام", msgDropoff: "التسليم", rented: "مؤجَّرة" },
     reviews: { eyebrow: "التقييمات", title: "عملاؤنا يحبّوننا", subtitle: "كلمات حقيقية من مسافرين ومقيمين استأجروا مع Indigo Cars." },
     why: {
       eyebrow: "لماذا Indigo", title: "تأجير بمفهوم جديد",
@@ -290,7 +291,7 @@ export const UI_STRINGS: Record<Locale, UI> = {
     spec: { seats: "мест", hp: "л.с.", bags: "сумки", perDay: "в день" },
     popular: "Популярно", bookCta: "Бронь в WhatsApp",
     aboutEyebrow: "О нас",
-    book: { title: "Спланируйте аренду", pickupDate: "Дата получения", returnDate: "Дата возврата", pickupLoc: "Место получения", dropoffLoc: "Место возврата", selectPlaceholder: "Выберите…", locIst: "Аэропорт Стамбул (IST)", locSaw: "Сабиха Гёкчен (SAW)", locOther: "Другое место", msgDates: "Даты", msgPickup: "Получение", msgDropoff: "Возврат", rented: "Арендовано" },
+    book: { title: "Спланируйте аренду", chooseCta: "Выбрать даты и забронировать", pickupDate: "Дата получения", returnDate: "Дата возврата", pickupLoc: "Место получения", dropoffLoc: "Место возврата", selectPlaceholder: "Выберите…", locIst: "Аэропорт Стамбул (IST)", locSaw: "Сабиха Гёкчен (SAW)", locOther: "Другое место", msgDates: "Даты", msgPickup: "Получение", msgDropoff: "Возврат", rented: "Арендовано" },
     reviews: { eyebrow: "Отзывы", title: "Нас выбирают", subtitle: "Реальные отзывы путешественников и местных, арендовавших у Indigo Cars." },
     why: {
       eyebrow: "Почему Indigo", title: "Аренда по-новому",
@@ -314,7 +315,7 @@ export const UI_STRINGS: Record<Locale, UI> = {
     spec: { seats: "Sitze", hp: "PS", bags: "Koffer", perDay: "pro Tag" },
     popular: "Beliebt", bookCta: "Per WhatsApp buchen",
     aboutEyebrow: "Über uns",
-    book: { title: "Miete planen", pickupDate: "Abholdatum", returnDate: "Rückgabedatum", pickupLoc: "Abholort", dropoffLoc: "Rückgabeort", selectPlaceholder: "Auswählen…", locIst: "Flughafen Istanbul (IST)", locSaw: "Sabiha Gökçen (SAW)", locOther: "Anderer Ort", msgDates: "Daten", msgPickup: "Abholung", msgDropoff: "Rückgabe", rented: "Vermietet" },
+    book: { title: "Miete planen", chooseCta: "Termine wählen & buchen", pickupDate: "Abholdatum", returnDate: "Rückgabedatum", pickupLoc: "Abholort", dropoffLoc: "Rückgabeort", selectPlaceholder: "Auswählen…", locIst: "Flughafen Istanbul (IST)", locSaw: "Sabiha Gökçen (SAW)", locOther: "Anderer Ort", msgDates: "Daten", msgPickup: "Abholung", msgDropoff: "Rückgabe", rented: "Vermietet" },
     reviews: { eyebrow: "Bewertungen", title: "Von unseren Mietern geliebt", subtitle: "Echte Stimmen von Reisenden und Einheimischen, die bei Indigo Cars gemietet haben." },
     why: {
       eyebrow: "Warum Indigo", title: "Mieten, neu gedacht",
