@@ -59,6 +59,8 @@ model Booking {
   startDate DateTime // pickup day (inclusive)
   endDate   DateTime // return day (inclusive — car is handed back this day)
 
+  hold      Boolean @default(false) // tentative hold (not a confirmed booking)
+
   firstName     String
   lastName      String
   passportNumber String?

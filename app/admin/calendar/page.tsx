@@ -39,6 +39,7 @@ export default async function CalendarPage() {
         carName: b.fleetCar.name,
         start: iso(b.startDate),
         end: iso(b.endDate),
+        hold: b.hold,
         firstName: b.firstName,
         lastName: b.lastName,
         passportNumber: b.passportNumber ?? "",

@@ -266,21 +266,27 @@ export async function createBooking(
     return { error: "Return date must be after the pickup date." };
   }
 
-  // Same-day turnover is allowed: a booking may start on the day another ends.
-  // Conflict only when the ranges truly overlap (strict comparison).
-  const conflict = await prisma.booking.findFirst({
-    where: {
-      fleetCarId,
-      startDate: { lt: endDate },
-      endDate: { gt: startDate },
-    },
-    include: { fleetCar: true },
-  });
-  if (conflict) {
-    const fmt = (d: Date) => d.toISOString().slice(0, 10);
-    return {
-      error: `Not available: ${conflict.fleetCar.name} is already booked ${fmt(conflict.startDate)} → ${fmt(conflict.endDate)} (${conflict.firstName} ${conflict.lastName}). Same-day handover is allowed — a new rental can start on the return day.`,
-    };
+  const hold = formData.get("hold") === "on";
+
+  // Holds are tentative — they never block and are never blocked. A *confirmed*
+  // booking only conflicts with other *confirmed* bookings. Same-day turnover is
+  // allowed: strict comparison, so a rental may start the day another ends.
+  if (!hold) {
+    const conflict = await prisma.booking.findFirst({
+      where: {
+        fleetCarId,
+        hold: false,
+        startDate: { lt: endDate },
+        endDate: { gt: startDate },
+      },
+      include: { fleetCar: true },
+    });
+    if (conflict) {
+      const fmt = (d: Date) => d.toISOString().slice(0, 10);
+      return {
+        error: `Not available: ${conflict.fleetCar.name} is already booked ${fmt(conflict.startDate)} → ${fmt(conflict.endDate)} (${conflict.firstName} ${conflict.lastName}). Same-day handover is allowed — a new rental can start on the return day.`,
+      };
+    }
   }
 
   await prisma.booking.create({
@@ -288,6 +294,7 @@ export async function createBooking(
       fleetCarId,
       startDate,
       endDate,
+      hold,
       firstName: ((formData.get("firstName") as string) || "").trim(),
       lastName: ((formData.get("lastName") as string) || "").trim(),
       passportNumber: ((formData.get("passportNumber") as string) || "").trim() || null,
@@ -297,6 +304,38 @@ export async function createBooking(
     },
   });
 
+  revalidatePath("/admin/calendar");
+  return { ok: true };
+}
+
+// Turn a tentative hold into a confirmed booking (re-checks for conflicts).
+export async function confirmBooking(
+  _prev: BookingResult | undefined,
+  formData: FormData
+): Promise<BookingResult> {
+  await requireUser();
+  const id = formData.get("id") as string;
+  const b = await prisma.booking.findUnique({ where: { id } });
+  if (!b) return { error: "Booking not found." };
+
+  const conflict = await prisma.booking.findFirst({
+    where: {
+      fleetCarId: b.fleetCarId,
+      hold: false,
+      id: { not: id },
+      startDate: { lt: b.endDate },
+      endDate: { gt: b.startDate },
+    },
+    include: { fleetCar: true },
+  });
+  if (conflict) {
+    const fmt = (d: Date) => d.toISOString().slice(0, 10);
+    return {
+      error: `Can't confirm — overlaps a confirmed booking ${fmt(conflict.startDate)} → ${fmt(conflict.endDate)} (${conflict.firstName} ${conflict.lastName}).`,
+    };
+  }
+
+  await prisma.booking.update({ where: { id }, data: { hold: false } });
   revalidatePath("/admin/calendar");
   return { ok: true };
 }
